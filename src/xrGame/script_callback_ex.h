@@ -123,13 +123,15 @@ public:
                     return TResult(m_functor(std::forward<Args>(args)...));
                 }
             }
-            process_error catch (std::exception&)
+            process_error catch (const std::exception& e)
             {
+                Msg("! Exception [%s] raised in script callback", e.what());
                 ai().script_engine().print_output(ai().script_engine().lua(), "", 1);
             }
         }
         catch (...)
         {
+            Msg("! Unknown exception raised in script callback, callback is cleared");
             const_cast<CScriptCallbackEx<TResult>*>(this)->clear();
         }
         return TResult(0);
@@ -153,13 +155,15 @@ public:
                     return TResult(m_functor(std::forward<Args>(args)...));
                 }
             }
-            process_error catch (std::exception&)
+            process_error catch (const std::exception& e)
             {
+                Msg("! Exception [%s] raised in script callback", e.what());
                 ai().script_engine().print_output(ai().script_engine().lua(), "", 1);
             }
         }
         catch (...)
         {
+            Msg("! Unknown exception raised in script callback, callback is cleared");
             const_cast<CScriptCallbackEx<TResult>*>(this)->clear();
         }
         return TResult(0);
@@ -186,13 +190,15 @@ void CScriptCallbackEx<void>::operator()(Args &&...args) const
                     m_functor(std::forward<Args>(args)...);
             }
         }
-        process_error catch (std::exception&)
+        process_error catch (const std::exception& e)
         {
+            Msg("! Exception [%s] raised in script callback", e.what());
             ai().script_engine().print_output(ai().script_engine().lua(), "", 1);
         }
     }
     catch (...)
     {
+        Msg("! Unknown exception raised in script callback, callback is cleared");
         const_cast<CScriptCallbackEx<void>*>(this)->clear();
     }
 }
@@ -217,13 +223,15 @@ void CScriptCallbackEx<void>::operator()(Args &&...args)
                     m_functor(std::forward<Args>(args)...);
             }
         }
-        process_error catch (std::exception&)
+        process_error catch (const std::exception& e)
         {
+            Msg("! Exception [%s] raised in script callback", e.what());
             ai().script_engine().print_output(ai().script_engine().lua(), "", 1);
         }
     }
     catch (...)
     {
+        Msg("! Unknown exception raised in script callback, callback is cleared");
         const_cast<CScriptCallbackEx<void>*>(this)->clear();
     }
 }

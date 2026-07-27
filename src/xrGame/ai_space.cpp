@@ -82,8 +82,13 @@ CAI_Space::~CAI_Space()
 	{
 		xr_delete(m_script_engine);
 	}
+	catch (const std::exception& e)
+	{
+		Msg("! Exception [%s] raised while destroying script engine", e.what());
+	}
 	catch (...)
 	{
+		Msg("! Exception raised while destroying script engine");
 	}
 
 	xr_delete(m_doors_manager);

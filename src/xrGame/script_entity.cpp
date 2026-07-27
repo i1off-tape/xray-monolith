@@ -224,9 +224,13 @@ void __stdcall ActionCallback(IKinematics* tpKinematics)
 		l_tpScriptMonster->vfUpdateSounds();
 		l_tpScriptMonster->vfUpdateParticles();
 	}
-	catch(...)
+	catch (const std::exception& e)
 	{
-
+		Msg("! Exception [%s] raised while updating script entity sounds and particles", e.what());
+	}
+	catch (...)
+	{
+		Msg("! Exception raised while updating script entity sounds and particles");
 	}
 	
 }

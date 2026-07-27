@@ -40,8 +40,14 @@ void CScriptBinder::clear()
 	{
 		xr_delete(m_object);
 	}
+	catch (const std::exception& e)
+	{
+		Msg("! CScriptBinder::clear() : exception [%s] while destroying script binder object", e.what());
+		m_object = 0;
+	}
 	catch (...)
 	{
+		Msg("! CScriptBinder::clear() : unknown exception while destroying script binder object");
 		m_object = 0;
 	}
 	init();
@@ -60,8 +66,14 @@ void CScriptBinder::reinit()
 		{
 			m_object->reinit();
 		}
+		catch (const std::exception& e)
+		{
+			Msg("! CScriptBinder::reinit() : exception [%s], script binder object is unbound", e.what());
+			clear();
+		}
 		catch (...)
 		{
+			Msg("! CScriptBinder::reinit() : unknown exception, script binder object is unbound");
 			clear();
 		}
 	}
@@ -104,8 +116,17 @@ void CScriptBinder::reload(LPCSTR section)
 	{
 		lua_function(game_object ? game_object->lua_game_object() : 0);
 	}
+	catch (const std::exception& e)
+	{
+		Msg("! CScriptBinder::reload() : exception [%s] in binder function [%s] for section [%s]", e.what(),
+		    pSettings->r_string(section, "script_binding"), section);
+		clear();
+		return;
+	}
 	catch (...)
 	{
+		Msg("! CScriptBinder::reload() : unknown exception in binder function [%s] for section [%s]",
+		    pSettings->r_string(section, "script_binding"), section);
 		clear();
 		return;
 	}
@@ -116,8 +137,16 @@ void CScriptBinder::reload(LPCSTR section)
 		{
 			m_object->reload(section);
 		}
+		catch (const std::exception& e)
+		{
+			Msg("! CScriptBinder::reload() : exception [%s] for section [%s], script binder object is unbound", e.what(),
+			    section);
+			clear();
+		}
 		catch (...)
 		{
+			Msg("! CScriptBinder::reload() : unknown exception for section [%s], script binder object is unbound",
+			    section);
 			clear();
 		}
 	}
@@ -146,8 +175,16 @@ BOOL CScriptBinder::net_Spawn(CSE_Abstract* DC)
 		{
 			return ((BOOL)m_object->net_Spawn(object));
 		}
+		catch (const std::exception& e)
+		{
+			Msg("! CScriptBinder::net_Spawn() : exception [%s] for object [%s], script binder object is unbound",
+			    e.what(), abstract->name_replace());
+			clear();
+		}
 		catch (...)
 		{
+			Msg("! CScriptBinder::net_Spawn() : unknown exception for object [%s], script binder object is unbound",
+			    abstract->name_replace());
 			clear();
 		}
 	}

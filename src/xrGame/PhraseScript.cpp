@@ -269,8 +269,13 @@ void CDialogScriptHelper::Action(const CGameObject* pSpeakerGO1, const CGameObje
 		{
 			lua_function(pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object(), dialog_id, phrase_id, "", parameters_table);
 		}
+		catch (const std::exception& e)
+		{
+			Msg("! Exception [%s] raised while calling dialog action [%s]", e.what(), Actions()[i].c_str());
+		}
 		catch (...)
 		{
+			Msg("! Exception raised while calling dialog action [%s]", Actions()[i].c_str());
 		}
 #else
 		bool functor_exists = ai().script_engine().functor(*Actions()[i], lua_function);
@@ -279,8 +284,13 @@ void CDialogScriptHelper::Action(const CGameObject* pSpeakerGO1, const CGameObje
 		{
 			lua_function(pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object(), dialog_id, phrase_id);
 		}
+		catch (const std::exception& e)
+		{
+			Msg("! Exception [%s] raised while calling dialog action [%s]", e.what(), *Actions()[i]);
+		}
 		catch (...)
 		{
+			Msg("! Exception raised while calling dialog action [%s]", *Actions()[i]);
 		}
 #endif
 	}

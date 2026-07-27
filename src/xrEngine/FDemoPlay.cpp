@@ -51,6 +51,12 @@ CDemoPlay::CDemoPlay(const char* name, float ms, u32 cycles, float life_time) : 
 			return;
 		}
 		IReader* fs = FS.r_open(name);
+		if (!fs)
+		{
+			Msg("! Cannot open demo file [%s]", name);
+			g_pGameLevel->Cameras().RemoveCamEffector(cefDemo);
+			return;
+		}
 		u32 sz = fs->length();
 		if (sz % sizeof(Fmatrix) != 0)
 		{

@@ -21,8 +21,14 @@ ObjectFactory::CLIENT_BASE_CLASS* CObjectItemScript::client_object() const
 		object = ::luabind::object_cast<ObjectFactory::CLIENT_SCRIPT_BASE_CLASS*>(
 			m_client_creator(), ::luabind::adopt<::luabind::result>());
 	}
+	catch (const std::exception& e)
+	{
+		Msg("! Exception [%s] raised while creating script client object", e.what());
+		return (0);
+	}
 	catch (...)
 	{
+		Msg("! Exception raised while creating script client object");
 		return (0);
 	}
 	R_ASSERT(object);

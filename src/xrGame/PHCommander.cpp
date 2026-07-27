@@ -46,8 +46,14 @@ void delete_call(CPHCall* & call)
 	{
 		xr_delete(call);
 	}
+	catch (const std::exception& e)
+	{
+		Msg("! Exception [%s] raised while destroying physics call", e.what());
+		call = NULL;
+	}
 	catch (...)
 	{
+		Msg("! Exception raised while destroying physics call");
 		call = NULL;
 	}
 }
@@ -82,8 +88,16 @@ void CPHCommander::update()
 		{
 			m_calls[i]->check();
 		}
+		catch (const std::exception& e)
+		{
+			Msg("! Exception [%s] raised while checking physics call, call is removed", e.what());
+			remove_call(m_calls.begin() + i);
+			i--;
+			continue;
+		}
 		catch (...)
 		{
+			Msg("! Exception raised while checking physics call, call is removed");
 			remove_call(m_calls.begin() + i);
 			i--;
 			continue;

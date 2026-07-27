@@ -80,6 +80,11 @@ void CGameMtlLibrary::Load()
 	R_ASSERT(materials.empty());
 
 	IReader* F = FS.r_open(name);
+	if (!F)
+	{
+		Log("! Can't open game material file: ", name);
+		return;
+	}
 	IReader& fs = *F;
 
 	R_ASSERT(fs.find_chunk(GAMEMTLS_CHUNK_VERSION));

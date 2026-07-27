@@ -350,6 +350,11 @@ bool LoadKernelScriptToGlobal(lua_State* L, const char* name)
 	{
 		int	start = lua_gettop(L);
 		IReader* l_tpFileReader = FS.r_open(FileName);
+		if (!l_tpFileReader)
+		{
+			Msg("! Cannot open script file [%s]", FileName);
+			return false;
+		}
 
 		string_path NameSpace;
 		xr_strcpy(NameSpace, name);
@@ -359,7 +364,10 @@ bool LoadKernelScriptToGlobal(lua_State* L, const char* name)
 
 		if (luaL_loadbuffer(L, (const char*)l_tpFileReader->pointer(), l_tpFileReader->length(), NameSpace))
 		{
+			LPCSTR error_message = lua_tostring(L, -1);
+			Msg("! Cannot load script [%s] : %s", name, error_message ? error_message : "unknown error");
 			lua_settop(L, start);
+			FS.r_close(l_tpFileReader);
 			return false;
 		}
 		else
@@ -368,10 +376,9 @@ bool LoadKernelScriptToGlobal(lua_State* L, const char* name)
 			int	l_iErrorCode = lua_pcall(L, 0, 0, (-1 == errFuncId) ? 0 : errFuncId);
 			if (l_iErrorCode)
 			{
-#ifdef DEBUG
 				g_pScriptEngine->print_output(L, name, l_iErrorCode);
-#endif
 				lua_settop(L, start);
+				FS.r_close(l_tpFileReader);
 				return false;
 			}
 		}

@@ -87,9 +87,13 @@ void CSE_ALifeOnlineOfflineGroup::update()
 
         }
     }
+    catch (const std::exception& e)
+    {
+        Msg("! Exception [%s] raised while updating online-offline group [%s]", e.what(), name_replace());
+    }
     catch (...)
     {
-
+        Msg("! Exception raised while updating online-offline group [%s]", name_replace());
     }
 }
 

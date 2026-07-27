@@ -136,8 +136,13 @@ CScriptThread::~CScriptThread()
 		luaL_unref			(ai().script_engine().lua(),LUA_REGISTRYINDEX,m_thread_reference);
 #endif
 	}
+	catch (const std::exception& e)
+	{
+		Msg("! Exception [%s] raised while destroying script thread [%s]", e.what(), *m_script_name);
+	}
 	catch (...)
 	{
+		Msg("! Exception raised while destroying script thread [%s]", *m_script_name);
 	}
 }
 
