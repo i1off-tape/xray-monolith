@@ -470,6 +470,7 @@
     <ClInclude Include="OPC_VolumeCollider.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="xrCDB.h" />
+    <ClInclude Include="xrCDB_ray_defs.h" />
     <ClInclude Include="xrXRC.h" />
     <ClInclude Include="xr_area.h" />
     <ClInclude Include="xr_collide_defs.h" />

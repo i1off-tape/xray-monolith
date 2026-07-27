@@ -143,6 +143,9 @@
     <ClInclude Include="xrCDB.h">
       <Filter>Kernel</Filter>
     </ClInclude>
+    <ClInclude Include="xrCDB_ray_defs.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
     <ClInclude Include="OPC_AABB.h">
       <Filter>Opcode</Filter>
     </ClInclude>
