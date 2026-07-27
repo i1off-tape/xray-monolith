@@ -205,4 +205,16 @@ ICF BOOL isect_sse(const aabb_t& box, const ray_t& ray, float& dist)
 	return ret;
 }
 
+// keep the short SSE macro names local to this header
+#undef loadps
+#undef storess
+#undef minss
+#undef maxss
+#undef minps
+#undef maxps
+#undef mulps
+#undef subps
+#undef rotatelps
+#undef muxhps
+
 #endif // xrCDB_ray_defsH
